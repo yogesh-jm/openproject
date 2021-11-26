@@ -28,35 +28,11 @@
 # See docs/COPYRIGHT.rdoc for more details.
 #++
 
-class CompaniesController < ApplicationController
-    model_object Category
-    # before_action :find_model_object, except: %i[new create]
-    # before_action :find_project_from_association, except: %i[new create]
-    # before_action :find_company, only: %i[new create]
-    # before_action :authorize
-
-    def index
-      @companies = Company.all
+module API
+    module V3
+      module Companies
+        class CompanyCollectionRepresenter < ::API::Decorators::UnpaginatedCollection
+        end
+      end
     end
-  
-    def new
-      @company = Company.new
-    end
-
-    # def create
-    # end
-  
-    # end
-  
-    # def destroy
-    # end
-  
-    # private
-  
-    # def find_company
-    #   @company = Company.find(params[:id])
-    # rescue ActiveRecord::RecordNotFound
-    #   render_404
-    # end
   end
-  

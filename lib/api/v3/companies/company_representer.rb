@@ -35,20 +35,17 @@ module API
   module V3
     module Companies
       class CompanyRepresenter < ::API::Decorators::Single
+        include ::API::Caching::CachedRepresenter
 
         link :self do
-            {
-              href: api_v3_paths.company
-            }
+          {
+            href: api_v3_paths.company(represented.id),
+            title: represented.name
+          }
         end
-        
-        property :id
 
-        property :name
-
-        associated_resource :owner,
-                            v3_path: :user,
-                            representer: ::API::V3::Users::UserRepresenter
+        property :id, render_nil: true
+        property :name, render_nil: true
 
         def _type
           'Company'

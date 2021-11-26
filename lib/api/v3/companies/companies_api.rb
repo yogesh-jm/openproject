@@ -28,26 +28,23 @@
 # See docs/COPYRIGHT.rdoc for more details.
 #++
 
-require 'api/v3/companies/company_representer'
-
 module API
   module V3
     module Companies
       class CompaniesAPI < ::API::OpenProjectAPI
         resources :companies do
-          route_param :id, type: Integer, desc: 'Company ID' do
-            params do
-              requires :id, desc: 'Company ID'
-            end
-            after_validation do
-                @company = Company.find(params[:id])
-  
-                raise ::API::Errors::NotFound.new if @company.nil?
-              end
-  
+          # get &::API::V3::Utilities::Endpoints::Index.new(model: Company).mount
+          get do
+            Company.all
+          end
+
+          route_param :id do
             get do
-              CompanyRepresenter.new(@company, current_user: current_user)
+              @company = Company.find(params[:id])
             end
+            # get &::API::V3::Utilities::Endpoints::Show.new(model: Company).mount
+
+            mount ::API::V3::Companies
           end
         end
       end
